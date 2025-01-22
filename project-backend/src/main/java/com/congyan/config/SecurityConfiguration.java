@@ -71,9 +71,9 @@ public class SecurityConfiguration {
                 .sessionManagement(conf -> conf
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/dysarthria/**").permitAll()
-                        .requestMatchers("/api/trainText/**").permitAll()
+                        .requestMatchers("/api/auth/**").authenticated()
+                        .requestMatchers("/api/dysarthria/**").authenticated()
+                        .requestMatchers("/api/trainText/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(requestLogFilter, UsernamePasswordAuthenticationFilter.class)

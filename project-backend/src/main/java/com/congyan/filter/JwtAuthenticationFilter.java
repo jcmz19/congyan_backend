@@ -1,6 +1,7 @@
 package com.congyan.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.congyan.entity.RestBean;
 import com.congyan.utils.Const;
 import com.congyan.utils.JwtUtils;
 import jakarta.annotation.Resource;
@@ -43,12 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             request.setAttribute(Const.ATTR_USER_ID, utils.toId(jwt));
-            log.info("possess jwt");
-            log.info("id" + utils.toId(jwt));
+            log.info("JWT 验证通过，用户 ID: {}", utils.toId(jwt));
+            filterChain.doFilter(request, response);
         }
         else {
-            log.info("no jwt");
+            log.warn("请求未携带有效的 JWT，路径: {}", request.getRequestURI());
+            response.getWriter().write(RestBean.forbidden("请先登录账号").asJsonString());
         }
-        filterChain.doFilter(request, response);
+
     }
 }
