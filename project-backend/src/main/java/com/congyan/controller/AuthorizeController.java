@@ -91,6 +91,6 @@ public class AuthorizeController {
         if(message == null)
             return RestBean.success();
         else
-            return RestBean.failure(400, message);
+            return RestBean.failure(2003, message);
     }
 }

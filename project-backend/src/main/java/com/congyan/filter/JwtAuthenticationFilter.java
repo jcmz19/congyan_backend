@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         else {
             log.warn("请求未携带有效的 JWT，路径: {}", request.getRequestURI());
-            response.getWriter().write(RestBean.forbidden("请先登录账号").asJsonString());
+            response.getWriter().write(RestBean.unauthorized("请先登录账号").asJsonString());
         }
 
     }

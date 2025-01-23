@@ -43,12 +43,9 @@ public class DysarthriaController {
             tempDir.mkdirs(); // 如果目录不存在，则创建目录
         }
         if (file.isEmpty()) {
-            System.out.println("empty fille");
-            return RestBean.failure(401,"empty file");
+            return RestBean.failure(2004,"empty file");
         }
-//        if(!FileUtils.isM4AFile(file)){
-//            return RestBean.failure(401,"wrong file format");
-//        }
+
 
         //保存音频文件
         try{
@@ -58,7 +55,7 @@ public class DysarthriaController {
             fos.write(file.getBytes());
         }
         catch (IOException e) {
-            return RestBean.failure(500,"文件写入失败，请联系管理员");
+            return RestBean.failure(1003,"文件写入失败，请联系管理员");
         }
 
 
@@ -68,7 +65,7 @@ public class DysarthriaController {
                     getDysarthriaResult(text.replaceAll("[^\\u4e00-\\u9fa5]", ""),
                             tempFile);
         } catch (Exception e) {
-            return RestBean.failure(500,"音频识别出错，请联系管理员");
+            return RestBean.failure(3002,"音频识别出错，请联系管理员");
         }
         tempFile.delete();
 
@@ -91,7 +88,7 @@ public class DysarthriaController {
         String base64 = base64String.substring(base64String.indexOf(",") + 1);
 
         if(base64.isEmpty()){
-            return RestBean.failure(401,"empty base64");
+            return RestBean.failure(2004,"空base64文件");
         }
 
         // 解码 Base64 字符串
@@ -108,7 +105,7 @@ public class DysarthriaController {
             FileOutputStream fos = new FileOutputStream(tempFile);
             fos.write(fileBytes);
         } catch (IOException e) {
-            return RestBean.failure(500,"base64文件写入失败，请联系管理员");
+            return RestBean.failure(1001,"base64文件写入失败，请联系管理员");
         }
         DysarthriaResultVO result = null;
         try {
@@ -117,7 +114,7 @@ public class DysarthriaController {
                             getText().replaceAll("[^\\u4e00-\\u9fa5]", ""),
                             tempFile);
         } catch (Exception e) {
-            return RestBean.failure(500,"音频识别出错，请联系管理员");
+            return RestBean.failure(3002,"音频识别出错，请联系管理员");
         }
         tempFile.delete();
         //System.out.println("delete");
@@ -141,7 +138,7 @@ public class DysarthriaController {
                     getPinyinDetail(text.replaceAll("[^\\u4e00-\\u9fa5]", ""))
             );
         } catch (Exception e) {
-            return RestBean.failure(500,"拼音解析失败，请联系管理员");
+            return RestBean.failure(2005,"拼音解析失败，请联系管理员");
         }
     }
 
@@ -165,7 +162,7 @@ public class DysarthriaController {
         String base64 = base64String.substring(base64String.indexOf(",") + 1);
 
         if(base64.isEmpty()){
-            return RestBean.failure(401,"empty base64");
+            return RestBean.failure(2004,"空base64文件");
         }
 
         // 解码 Base64 字符串
@@ -182,12 +179,12 @@ public class DysarthriaController {
             FileOutputStream fos = new FileOutputStream(tempFile);
             fos.write(fileBytes);
         } catch (IOException e) {
-            return RestBean.failure(500,"base64文件写入失败，请联系管理员");
+            return RestBean.failure(1001,"base64文件写入失败，请联系管理员");
         }
         try {
             return RestBean.success(dysarthriaTestService.getSinglePronounceDetail(pronounceVO.getCharacter(),tempFile));
         } catch (Exception e) {
-            return RestBean.failure(500,"语音或数据库问题     ，请联系管理员");
+            return RestBean.failure(1002,"数据库问题，请联系管理员");
         }
     }
 
@@ -207,7 +204,7 @@ public class DysarthriaController {
             TtsVO ttsVO = dysarthriaTestService.getTTS(text.getText());
             return RestBean.success(ttsVO);
         } catch (Exception e) {
-            return RestBean.failure(500,"tts工具网络错误，请联系管理员");
+            return RestBean.failure(3001,"tts工具网络错误，请联系管理员");
 
         }
     }

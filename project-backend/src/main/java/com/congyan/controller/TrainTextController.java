@@ -32,6 +32,6 @@ public class TrainTextController {
         if(category.matches("^(ancient poetry|modern poetry|prose)$"))
             return RestBean.success(trainTextService.getTrainTextByCategory(category));
         else
-            return RestBean.failure(401,"no such category");
+            return RestBean.failure(2006,"没有此目录");
     }
 }
