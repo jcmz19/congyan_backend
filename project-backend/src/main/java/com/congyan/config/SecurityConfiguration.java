@@ -71,7 +71,7 @@ public class SecurityConfiguration {
                 .sessionManagement(conf -> conf
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**").authenticated()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/dysarthria/**").authenticated()
                         .requestMatchers("/api/trainText/**").authenticated()
                         .anyRequest().authenticated()
@@ -129,7 +129,7 @@ public class SecurityConfiguration {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         String authorization = request.getHeader("Authorization");
-        log.info(authorization);
+        //log.info(authorization);
         if(utils.invalidateJwt(authorization)) {
             writer.write(RestBean.success("退出登录成功").asJsonString());
             return;
