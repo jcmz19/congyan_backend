@@ -135,7 +135,7 @@ public class DysarthriaController {
         try {
             return RestBean.success(
                     dysarthriaTestService.
-                    getPinyinDetail(text.replaceAll("[^\\u4e00-\\u9fa5]", ""))
+                    getPinyinDetailVO(text.replaceAll("[^\\u4e00-\\u9fa5]", ""))
             );
         } catch (Exception e) {
             return RestBean.failure(2005,"拼音解析失败，请联系管理员");

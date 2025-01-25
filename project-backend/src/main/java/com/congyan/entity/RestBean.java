@@ -23,11 +23,11 @@ public record RestBean<T> (long id, int code, T data, String message) {
     }
 
     public static <T> RestBean<T> forbidden(String message){
-        return failure(403, message);
+        return failure(2001, message);
     }
 
     public static <T> RestBean<T> unauthorized(String message){
-        return failure(401, message);
+        return failure(2002, message);
     }
 
     public static <T> RestBean<T> failure(int code, String message){

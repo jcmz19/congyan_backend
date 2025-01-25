@@ -166,7 +166,7 @@ public abstract class PinyinUtil {
     public static TextPinyin getTextPinyin(String str1) throws Exception {
 
         //获取原字段的拼音，以“,”分割
-        String str2 = getPinYinDetail(str1);
+        String str2 = getPinYinDetail(str1.replaceAll("[^\\u4e00-\\u9fa5]", ""));
 
         // 声母列表
         String initialConsonants = "b|p|d|t|g|k|zh|z|j|c|ch|q|f|sh|s|x|m|n|r|l|h|w|y";

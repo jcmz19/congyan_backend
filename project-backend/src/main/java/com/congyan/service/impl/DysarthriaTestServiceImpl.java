@@ -55,36 +55,11 @@ public class DysarthriaTestServiceImpl implements DysarthriaTestService {
      * 查询声母韵母详细发音
      * @param text 原文本
      * @return 返回detail拼音VO
-     * @throws Exception 未找到韵母
      */
     @Override
-    public PinyinDetailVO getPinyinDetail(String text) {
-        TextPinyin textPinyin = null;
-        try {
-            textPinyin = PinyinUtil.getTextPinyin(text);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public PinyinDetailVO getPinyinDetailVO(String text) throws Exception {
 
-        List<Initial> initialDetailList = initialService.getInitialDetailList(textPinyin.getSm());
-        System.out.println(initialDetailList);
-        List<Vowel> vowelDetailList = null;
-        try {
-            vowelDetailList = vowelService.getVowelDetailList(textPinyin.getYm());
-            ;
-            System.out.println(vowelDetailList);
-        } catch (Exception e) {
-            System.out.println("ym mysql");
-            e.printStackTrace();
-        }
-
-        try {
-
-            new PinyinDetail(textPinyin, initialDetailList, vowelDetailList).asViewObject(PinyinDetailVO.class);
-        } catch (Exception e) {
-            System.out.println("2");
-        }
-        return new PinyinDetail(textPinyin,initialService.getInitialDetailList(textPinyin.getSm()),vowelService.getVowelDetailList(textPinyin.getYm())).asViewObject(PinyinDetailVO.class);
+        return getPinyinDetail(text).asViewObject(PinyinDetailVO.class);
     }
 
 
@@ -139,5 +114,17 @@ public class DysarthriaTestServiceImpl implements DysarthriaTestService {
         return pronounce.asViewObject(SinglePronounceDetailVO.class);
     }
 
+    /**
+     * 获取文本拼音声母韵母列表
+     * 查询声母韵母详细发音
+     * @param text 原文本
+     * @return 返回detail拼音
+     */
+    public PinyinDetail getPinyinDetail(String text)throws Exception{
+        TextPinyin textPinyin;
+        textPinyin = PinyinUtil.getTextPinyin(text);
+
+        return new PinyinDetail(textPinyin,initialService.getInitialDetailList(textPinyin.getSm()),vowelService.getVowelDetailList(textPinyin.getYm()));
+    }
 
 }

@@ -74,6 +74,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/dysarthria/**").authenticated()
                         .requestMatchers("/api/trainText/**").authenticated()
+//                        .requestMatchers("/api/dysarthria/**").permitAll()
+//                        .requestMatchers("/api/trainText/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(requestLogFilter, UsernamePasswordAuthenticationFilter.class)
