@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,11 +35,15 @@ import java.util.concurrent.CountDownLatch;
 
 @Slf4j
 public class WebIATWS extends WebSocketListener {
-    private static final String hostUrl = "https://iat-api.xfyun.cn/v2/iat"; //中英文，http url 不支持解析 ws/wss schema
+    @Value("${api.iat.url}")
+    private static String hostUrl;//中英文，http url 不支持解析 ws/wss schema
     // private static final String hostUrl = "https://iat-niche-api.xfyun.cn/v2/iat";//小语种
-	private static final String appid = "9ec3b905"; //在控制台-我的应用获取
-	private static final String apiSecret = "ZmYxZGM1Y2RjZWVhNGY4OTA3NWRjN2U5"; //在控制台-我的应用-语音听写（流式版）获取
-	private static final String apiKey = "5004225e3b7909bce1d5abe8a6f63aed"; //在控制台-我的应用-语音听写（流式版）获取
+    @Value("${api.iat.appid}")
+	private static String appid ; //在控制台-我的应用获取
+    @Value("${api.iat.api-secret}")
+	private static String apiSecret; //在控制台-我的应用-语音听写（流式版）获取
+    @Value("${api.iat.api-key}")
+	private static String apiKey; //在控制台-我的应用-语音听写（流式版）获取
 
     public WebIATWS(File file,CountDownLatch latch) {
         this.file = file;

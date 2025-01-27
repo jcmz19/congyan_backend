@@ -5,6 +5,7 @@ import okhttp3.HttpUrl;
 import org.java_websocket.WebSocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,11 +28,15 @@ import java.util.concurrent.CountDownLatch;
  */
 public class WebTtsWs {
     // 地址与鉴权信息
-    private static final String hostUrl = "https://tts-api.xfyun.cn/v2/tts";
+    @Value("${api.tts.url}")
+    private static String hostUrl;
     // 均到控制台-语音合成页面获取
-    private static final String APPID = "9ec3b905";
-    private static final String APISecret = "ZmYxZGM1Y2RjZWVhNGY4OTA3NWRjN2U5";
-    private static final String APIKey = "5004225e3b7909bce1d5abe8a6f63aed";
+    @Value("${api.tts.appid}")
+    private static String APPID;
+    @Value("${api.tts.api-secret}")
+    private static String APISecret;
+    @Value("${api.tts.api-key}")
+    private static String APIKey = "5004225e3b7909bce1d5abe8a6f63aed";
 
     // 合成文本编码格式
     public static final String TTE = "UTF8"; // 小语种必须使用UNICODE编码作为值
