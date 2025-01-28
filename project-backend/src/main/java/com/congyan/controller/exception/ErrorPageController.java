@@ -84,8 +84,10 @@ public class ErrorPageController extends AbstractErrorController {
             case 2005 -> "拼音解析失败，请联系管理员";
             case 2006 -> "没有此目录";
             case 2007 -> "参数错误";
+            case 2009 -> "数据库格式问题，请联系管理员";
             case 3001 -> "tts工具网络错误，请联系管理员";
             case 3002 -> "音频识别出错，请联系管理员";
+            case 4001 -> "未定义的错误，请联系管理员";
             default -> null;
         };
         return Optional.ofNullable(value);

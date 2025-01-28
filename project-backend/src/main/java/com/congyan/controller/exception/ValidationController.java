@@ -21,6 +21,6 @@ public class ValidationController {
     @ExceptionHandler(ValidationException.class)
     public RestBean<Void> validateError(ValidationException exception) {
         log.warn("Resolved [{}: {}]", exception.getClass().getName(), exception.getMessage());
-        return RestBean.failure(2007, "请求参数有误");
+        return RestBean.failure(4001, "未定义的错误，请联系管理员");
     }
 }

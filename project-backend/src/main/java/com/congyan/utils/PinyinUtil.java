@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.congyan.enums.pinyinEnum.*;
+import org.springframework.beans.factory.annotation.Value;
 
 //实现拼音比较的工具类
 public abstract class PinyinUtil {
@@ -49,18 +50,24 @@ public abstract class PinyinUtil {
                 相同则为20
                 不同则为0
      */
-    private static final int SM_RIGHT = 40;
-    private static final int YM_RIGHT = 40;
-    private static final int SD_RIGHT = 20;
+    @Value("${dysarthria.score-right.train.sm}")
+    private static int SM_RIGHT;
+    @Value("${dysarthria.score-right.train.ym}")
+    private static int YM_RIGHT;
+    @Value("${dysarthria.score-right.train.sd}")
+    private static int SD_RIGHT;
+    @Value("${dysarthria.score-right.train.total}")
+    private static int TOTAL_RIGHT;
+    @Value("${dysarthria.full-score}")
+    private static int FULL_SCORE;
+    private static final float SM_METHOD = SM_Enum.SM_DIFF_PART.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
+    private static final float SM_PART = SM_Enum.SM_DIFF_METHOD.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
 
-    private static final float SM_METHOD = 0.6f;
-    private static final float SM_PART = 0.4f;
-
-    private static final float YM_ALIKE = 0.75f;
-    private static final float YM_SHAPE = 0.6f;
-    private static final float YM_STRUCT = 0.6f;
-    private static final float YM_STRUCT_AND_ROUGH = 0.4f;
-    private static final float YM_ROUGH = 0.2f;
+    private static final float YM_ALIKE = YM_Enum.YM_SAME_LIKE.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
+    private static final float YM_SHAPE = YM_Enum.YM_DIFF_STRUCT.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
+    private static final float YM_STRUCT = YM_Enum.YM_DIFF_SHAPE.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
+    private static final float YM_STRUCT_AND_ROUGH = YM_Enum.YM_DIFF_SMOOTH.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
+    private static final float YM_ROUGH = YM_Enum.YM_DIFF_SHAPE_AND_SMOOTH.getValue() * ((float) FULL_SCORE /TOTAL_RIGHT);
 
 
 
@@ -335,7 +342,7 @@ public abstract class PinyinUtil {
             }
             else if(source_sm_num == pronounce_sm_num){
                 sm_result.add(SM_Enum.SM_SAME);
-                score += SM_RIGHT * 1;
+                score += SM_RIGHT * 1 * (FULL_SCORE /TOTAL_RIGHT);
             }
             else if (source_sm_num != 0 && pronounce_sm_num != 0 ) {//确保两个都有声母
                if ((source_sm_num%9)==(pronounce_sm_num%9)) {
@@ -366,7 +373,7 @@ public abstract class PinyinUtil {
             else {
                 if(source_ym.equals(pronounce_ym)){
                     ym_result.add(YM_Enum.YM_SAME);
-                    score += YM_RIGHT * 1;
+                    score += YM_RIGHT * 1 * (FULL_SCORE /TOTAL_RIGHT);
                 }
                 else if (source_ym_num == pronounce_ym_num) {
                     ym_result.add(YM_Enum.YM_SAME_LIKE);
@@ -399,7 +406,7 @@ public abstract class PinyinUtil {
             //声调比较
             if(source_sd.equals(pronounce_sd)) {
                 sd_result.add(SD_Enum.SD_SAME);
-                score += SD_RIGHT * 1;
+                score += SD_RIGHT * 1 * (FULL_SCORE /TOTAL_RIGHT);
             }
             else {
                 sd_result.add(SD_Enum.SD_DIFFERENT);
